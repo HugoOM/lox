@@ -73,7 +73,28 @@ class Scanner {
 			case '>': addToken(match('=') ? TokenType.GREATER_EQUAL : TokenType.GREATER); break;
 
 			case '/': 
-				  if (match('/')) {
+				  if (match('*')) {
+					  int depth = 1;
+
+					  while (depth > 0 && !isAtEnd()) {
+						  if (peek() == '*' && peekNext() == '/') {
+							  depth -= 1;
+						  } else if (peek() == '/' && peekNext() == '*') {
+							  depth += 1;
+						  } else if (peek() == '\n') {
+							  line += 1;
+						  }
+						  advance();
+					  }
+
+					  if (isAtEnd()) {
+						  Lox.error(line, "Unterminated multiline comment block.");
+						  break;
+					  }
+
+					  // Consume the trailing closing '/'
+					  advance();
+				  } else if (match('/')) {
 					  // A comment goes until the end of the line.
 					  while (peek() != '\n' && !isAtEnd()) advance();
 					  // Do not call addToken here. The parser does not want comments.

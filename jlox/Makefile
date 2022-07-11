@@ -3,7 +3,7 @@ CLASSES := src/Lox.java \
 	   src/Token.java \
 	   src/TokenType.java
 
-default: build
+default: build run
 
 build: 
 	javac -g -d "./out" -cp ./src $(CLASSES)
