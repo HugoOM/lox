@@ -1,13 +1,13 @@
-default: build run
+default: generate_ast build run
 
 build: 
-	javac -g -d "./out" -cp ./src ./src/*.java
+	@ javac -g -d "./out" -cp ./src ./src/*.java
+	@ echo "JLox Recompiled"
 
 run: 
 	@ java -cp ./out com.craftinginterpreters.lox.Lox
 
-compile_tooling:
-	javac -g -d "./out" -cp ./tools ./tools/*.java
-
 generate_ast:
-	java -cp ./out com.craftinginterpreters.tool.GenerateAst "./src"
+	@ javac -g -d "./out" -cp ./tools ./tools/*.java
+	@ java -cp ./out com.craftinginterpreters.tool.GenerateAst "./src"
+	@ echo "AST Regenerated"
