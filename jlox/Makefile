@@ -1,6 +1,6 @@
-default: generate_ast build run
+default: build run
 
-build: 
+build:  generate_ast
 	@ javac -g -d "./out" -cp ./src ./src/*.java
 	@ echo "JLox Recompiled"
 
