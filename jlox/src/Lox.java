@@ -91,6 +91,11 @@ public class Lox {
 		Parser parser = new Parser(tokens);
 		Expr expression = parser.parse();
 
+		// Hack until we get error recovery / parser synchronization.
+		if (hadError) {
+			return;
+		}
+
 		//For now, just print the tokens.
 		System.out.println("Lexical Tokens:");
 		for (Token token : tokens) {

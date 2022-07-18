@@ -25,6 +25,11 @@ class RpnPrinter implements Expr.Visitor<String> {
 		return toPostfix(expr.operator.lexeme, expr.right);
 	}
 
+	@Override
+	public String visitConditionalExpr(Expr.Conditional expr) {
+		return toPostfix("ternary", expr.expression, expr.thenBranch, expr.elseBranch);
+	}
+	
 	private String toPostfix(String name, Expr... exprs) {
 		StringBuilder builder = new StringBuilder();
 

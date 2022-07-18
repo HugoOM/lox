@@ -18,7 +18,8 @@ public class GenerateAst {
 				"Binary : Expr left, Token operator, Expr right",
 				"Grouping : Expr expression",
 				"Literal : Object value",
-				"Unary : Token operator, Expr right"
+				"Unary : Token operator, Expr right",
+				"Conditional : Expr expression, Expr thenBranch, Expr elseBranch"
 			)
 		);
 	}
@@ -97,7 +98,6 @@ public class GenerateAst {
 		writer.println();
 
 		// Fields
-		writer.println();
 		for (String field : fields) {
 			writer.println("	final " + field + ";");
 		}

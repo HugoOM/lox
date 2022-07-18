@@ -21,7 +21,26 @@ class Parser {
 	}
 
 	private Expr expression() {
-		return parseBinaryRule(this::equality);
+		return parseBinaryRule(this::comma);
+	}
+
+	// Challenge #6.1, not sure what it implies to "drop" the operator token here ...
+	private Expr comma() {
+		return parseBinaryRule(this::ternary, TokenType.COMMA);
+	}
+
+	// Challenge #6.2
+	private Expr ternary() {
+		Expr expr = equality();
+
+		if (match(TokenType.QUESTIONMARK)) {
+			Expr thenBranch = expression();
+			consume(TokenType.COLON, "Expect ':' after then branch of ternary expression.");
+			Expr elseBranch = ternary();
+			expr = new Expr.Conditional(expr, thenBranch, elseBranch);
+		}
+
+		return expr;
 	}
 	
 	private Expr equality() {
@@ -71,8 +90,28 @@ class Parser {
 			return new Expr.Grouping(expr);
 		}
 
+		// Error Productions
+		checkForBinaryRuleError(this::comma, TokenType.COMMA);
+
+		checkForBinaryRuleError(this::equality, TokenType.BANG_EQUAL, TokenType.EQUAL_EQUAL);
+
+		checkForBinaryRuleError(this::comparison, TokenType.GREATER, TokenType.GREATER_EQUAL, TokenType.LESS, TokenType.LESS_EQUAL);
+
+		checkForBinaryRuleError(this::term, TokenType.PLUS);
+
+		checkForBinaryRuleError(this::factor, TokenType.SLASH, TokenType.STAR);
+
 		// We are on a token that cannot start an expression ...
 		throw error(peek(), "Expect expression.");
+	}
+
+
+	private void checkForBinaryRuleError(BinaryRuleParser op, TokenType... types) {
+		if (match(types)) {
+			ParseError err = error(previous(), "Missing left-hand operand.");
+			op.parse();
+			throw err;
+		}
 	}
 
 	private Expr parseBinaryRule(BinaryRuleParser op, TokenType... types) {

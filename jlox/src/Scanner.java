@@ -67,6 +67,10 @@ class Scanner {
 			case ';': addToken(TokenType.SEMICOLON); break;
 			case '*': addToken(TokenType.STAR); break;
 
+			// Need lookbehind to handle (error out) freefloating ':' without a ternary?
+			case ':': addToken(TokenType.COLON); break;
+			case '?': addToken(TokenType.QUESTIONMARK); break;
+
 			case '!': addToken(match('=') ? TokenType.BANG_EQUAL : TokenType.BANG); break;
 			case '=': addToken(match('=') ? TokenType.EQUAL_EQUAL : TokenType.EQUAL); break;
 			case '<': addToken(match('=') ? TokenType.LESS_EQUAL : TokenType.LESS); break;
