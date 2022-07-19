@@ -1,7 +1,6 @@
 package com.craftinginterpreters.lox;
 
 import java.lang.Class;
-import java.lang.reflect.Type;
 
 class Interpreter implements Expr.Visitor<Object> {
 	public void interpret (Expr expression) {
@@ -73,11 +72,24 @@ class Interpreter implements Expr.Visitor<Object> {
 
 				if (left instanceof String && right instanceof String) {
 					return (String)left + (String)right;
+				} 
+
+				if (left instanceof String && right instanceof Double) {
+					return (String)left + stringify(right);
+				}
+
+				if (left instanceof Double && right instanceof String) {
+					return stringify(left) + (String)right;
 				}
 
 				throw new RuntimeError(expr.operator, "Operands must be two numbers or two strings.");
 			case SLASH:
 				checkOperandType(Double.class, expr.operator, left, right);
+
+				if ((double)right == 0.0) {
+					throw new RuntimeError(expr.operator, "Cannot divide by zero");
+				}
+
 				return (double)left / (double)right;
 			case STAR:
 				checkOperandType(Double.class, expr.operator, left, right);
@@ -103,9 +115,8 @@ class Interpreter implements Expr.Visitor<Object> {
 			return elseObj;
 		}
 	}
-
 	
-	private <T> void checkOperandType(Class<T> concreteType, Token operator, Object... operands) {
+	private void checkOperandType(Class concreteType, Token operator, Object... operands) {
 		for (Object operand : operands) {
 			if (!concreteType.isInstance(operand)) {
 				throw new RuntimeError(operator, "Operand of incorrect type: " + operand + " should be of type " + concreteType.toString());	
@@ -113,7 +124,6 @@ class Interpreter implements Expr.Visitor<Object> {
 		}
 	}
 	
-
 	private Object evaluate(Expr expr) {
 		return expr.accept(this);
 	}
