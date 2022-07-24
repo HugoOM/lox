@@ -29,6 +29,17 @@ class RpnPrinter implements Expr.Visitor<String> {
 	public String visitConditionalExpr(Expr.Conditional expr) {
 		return toPostfix("ternary", expr.expression, expr.thenBranch, expr.elseBranch);
 	}
+
+	@Override
+	public String visitVariableExpr(Expr.Variable expr) {
+		return expr.name.lexeme;
+	}
+
+	@Override
+	public String visitAssignExpr(Expr.Assign expr) {
+		// Placeholder - should really return the value as well but the RPN printer is unapplicable now ... 
+		return expr.name.lexeme;
+	}
 	
 	private String toPostfix(String name, Expr... exprs) {
 		StringBuilder builder = new StringBuilder();

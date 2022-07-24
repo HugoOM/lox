@@ -14,8 +14,10 @@ public class Lox {
 	private static final Interpreter interpreter = new Interpreter();
 
 	public static void main(String[] args) throws IOException {
-		testRpnPrinter();
-		testAstPrinter();
+		/*
+			testRpnPrinter();
+			testAstPrinter();
+		*/
 		System.out.println();
 
 		if (args.length > 1) {
@@ -94,25 +96,29 @@ public class Lox {
 		Scanner scanner = new Scanner(source);
 		List<Token> tokens = scanner.scanTokens();
 		Parser parser = new Parser(tokens);
-		Expr expression = parser.parse();
+		List<Stmt> statements = parser.parse();
 
 		// Hack until we get error recovery / parser synchronization.
 		if (hadError) {
 			return;
 		}
 
-		//For now, just print the tokens.
-		System.out.println("Lexical Tokens:");
-		for (Token token : tokens) {
-			System.out.println("	" + token);
-		}
+		/*
+			//For now, just print the tokens.
+			System.out.println("Lexical Tokens:");
+			for (Token token : tokens) {
+				System.out.println("	" + token);
+			}
 
-		System.out.println("Syntax Tree:");
-		System.out.println("	" + new AstPrinter().print(expression));
+			
+			System.out.println("Syntax Tree:");
+			System.out.println("	" + new AstPrinter().print(expression));
 
-		System.out.println("Interpreted Results:");
-		System.out.print("	");
-		interpreter.interpret(expression);
+			System.out.println("Interpreted Results:");
+			System.out.print("	");
+		*/
+
+		interpreter.interpret(statements);
 		System.out.println();
 	}
 

@@ -5,7 +5,7 @@ build:  generate_ast
 	@ echo "JLox Recompiled"
 
 run: 
-	@ java -cp ./out com.craftinginterpreters.lox.Lox
+	@ java -cp ./out com.craftinginterpreters.lox.Lox $(script)
 
 generate_ast:
 	@ javac -g -d "./out" -cp ./tools ./tools/*.java
