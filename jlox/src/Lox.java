@@ -15,7 +15,6 @@ public class Lox {
 
 	public static void main(String[] args) throws IOException {
 		/*
-			testRpnPrinter();
 			testAstPrinter();
 		*/
 		System.out.println();
@@ -45,29 +44,6 @@ public class Lox {
 
 		System.out.println("Testing AST Printer: " + new AstPrinter().print(expression));
 	}
-
-	private static void testRpnPrinter() {
-		Expr expression = new Expr.Binary(
-			new Expr.Grouping(
-				new Expr.Binary(
-					new Expr.Literal(1),
-					new Token(TokenType.PLUS, "+", null, 1),
-					new Expr.Literal(2)
-				)
-			),
-			new Token(TokenType.STAR, "*", null, 1),
-			new Expr.Grouping(
-				new Expr.Binary(
-					new Expr.Literal(4),
-					new Token(TokenType.MINUS, "-", null, 1),
-					new Expr.Literal(3)
-				)
-			)
-		);
-
-		System.out.println("Testing RPN Printer: " + new RpnPrinter().print(expression));
-	}
-
 
 	private static void runFile(String path) throws IOException {
 		byte[] bytes = Files.readAllBytes(Paths.get(path));
