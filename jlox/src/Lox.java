@@ -14,9 +14,6 @@ public class Lox {
 	private static final Interpreter interpreter = new Interpreter();
 
 	public static void main(String[] args) throws IOException {
-		/*
-			testAstPrinter();
-		*/
 		System.out.println();
 
 		if (args.length > 1) {
@@ -28,21 +25,6 @@ public class Lox {
 			runPrompt();
 		}
 		
-	}
-
-	private static void testAstPrinter() {
-		Expr expression = new Expr.Binary(
-			new Expr.Unary(
-				new Token(TokenType.MINUS, "-", null, 1),
-				new Expr.Literal(123)
-			),
-			new Token(TokenType.STAR, "*", null, 1),
-			new Expr.Grouping(
-				new Expr.Literal(45.67)
-			)
-		);
-
-		System.out.println("Testing AST Printer: " + new AstPrinter().print(expression));
 	}
 
 	private static void runFile(String path) throws IOException {
@@ -78,21 +60,6 @@ public class Lox {
 		if (hadError) {
 			return;
 		}
-
-		/*
-			//For now, just print the tokens.
-			System.out.println("Lexical Tokens:");
-			for (Token token : tokens) {
-				System.out.println("	" + token);
-			}
-
-			
-			System.out.println("Syntax Tree:");
-			System.out.println("	" + new AstPrinter().print(expression));
-
-			System.out.println("Interpreted Results:");
-			System.out.print("	");
-		*/
 
 		interpreter.interpret(statements);
 		System.out.println();
