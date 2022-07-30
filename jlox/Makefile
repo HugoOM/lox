@@ -10,7 +10,9 @@ run:
 generate_ast:
 	@ javac -g -d "./out" -cp ./tools ./tools/*.java
 	@ java -cp ./out com.craftinginterpreters.tool.GenerateAst "./src"
-	@ echo "AST Regenerated"
+	@ echo "AST Node Definitions (Re)Generated"
 
 clean:
 	@ rm -rf ./out
+	@ rm ./src/Expr.java ./src/Stmt.java
+
