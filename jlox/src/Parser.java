@@ -48,11 +48,17 @@ class Parser {
 
 	private Stmt classDeclaration() {
 		Token name = consume(TokenType.IDENTIFIER, "Expect class name.");
+
+		Expr.Variable superclass = null;
+		if (match(TokenType.LESS)) {
+			consume(TokenType.IDENTIFIER, "Expect superclass name.");
+			superclass = new Expr.Variable(previous());
+		}
+
 		consume(TokenType.LEFT_BRACE, "Expect '{' before class body.");
 
 		List<Stmt.Function> methods = new ArrayList<>();
 		List<Stmt.Function> statics = new ArrayList<>();
-
 		while (!check(TokenType.RIGHT_BRACE) && !isAtEnd()) {
 			if (check(TokenType.CLASS)) {
 				advance();
@@ -64,7 +70,7 @@ class Parser {
 
 		consume(TokenType.RIGHT_BRACE, "Expect '}' after class body.");
 
-		return new Stmt.Class(name, methods, statics);
+		return new Stmt.Class(name, superclass, methods, statics);
 	}
 
 	private Stmt varDeclaration() {
@@ -372,6 +378,14 @@ class Parser {
 
 		if (match(TokenType.NUMBER, TokenType.STRING)) {
 			return new Expr.Literal(previous().literal);
+		}
+
+		if (match(TokenType.SUPER)) {
+			Token keyword = previous();
+			consume(TokenType.DOT, "Expect '.' after 'super'.");
+			Token method = consume(TokenType.IDENTIFIER, "Expect superclass method name.");
+
+			return new Expr.Super(keyword, method);
 		}
 
 		if (match(TokenType.THIS)) {
