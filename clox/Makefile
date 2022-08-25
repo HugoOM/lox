@@ -14,3 +14,6 @@ clean:
 
 memcheck:
 	@ valgrind out/clox
+
+perf:
+	@ perf stat -r 200 ./out/clox > /dev/null
