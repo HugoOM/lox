@@ -199,6 +199,8 @@ static Token string() {
 }
 
 Token scanToken() {
+	skipWhitespace();
+
 	scanner.start = scanner.current;
 
 	if (isAtEnd()) {
