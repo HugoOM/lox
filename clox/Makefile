@@ -1,10 +1,13 @@
-default: build run
+default: build_debug run
 
-build:
-	@ gcc -o out/clox -Wfatal-errors src/*
+build_debug:
+	@ gcc -o out/clox -DDEBUG_PRINT_CODE -DDEBUG_TRACE_EXECUTION -Wfatal-errors src/*
 
 build_opt:
 	@ gcc -o out/clox -O3 src/*
+
+build_nodebug:
+	@ gcc -o out/clox -O3 -UDEBUG_PRINT_CODE -UDEBUG_TRACE_EXECUTION src/*
 
 run: 
 	@ out/clox
